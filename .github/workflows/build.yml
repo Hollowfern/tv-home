@@ -9,14 +9,13 @@ jobs:
         with:
           distribution: temurin
           java-version: '17'
-      - name: Install SDK parts
-        run: |
-          yes | sdkmanager --licenses > /dev/null || true
-          sdkmanager "platforms;android-34" "build-tools;34.0.0"
+      - uses: android-actions/setup-android@v3
+        with:
+          packages: 'platforms;android-34 build-tools;34.0.0'
       - name: Build
         run: |
           chmod +x launcher/build-and-install.sh
-          ANDROID_HOME="$ANDROID_HOME" JAVA_HOME="$JAVA_HOME" launcher/build-and-install.sh --build
+          launcher/build-and-install.sh --build
       - uses: actions/upload-artifact@v4
         with:
           name: tvhome-apk
